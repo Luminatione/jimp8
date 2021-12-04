@@ -12,6 +12,10 @@ int eliminate(Matrix *mat, Matrix *b){
 		for(j = i + 1; j < mat->r; ++j)
 		{
 			int z;
+			if(mat->data[i][i] == 0.0)
+			{
+				return 1;
+			}
 			double factor = mat->data[j][i]/mat->data[i][i];
 			for(z = 0; z < mat->c; ++z)
 			{
