@@ -15,7 +15,7 @@ int  backsubst(Matrix *x, Matrix *mat, Matrix *b) {
 				for (i =0; i < x->r; i++) {
 								x->data[i][0] = b->data[i][0];
 				}
-
+				//siema
 				return 0;
 }
 
