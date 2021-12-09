@@ -15,6 +15,13 @@
 					B = readFromFileEx(fileB);\
 					resultA = readFromFileEx(fileResult)
 
+#define RESETUPBS	freeMatrix(Abs);\
+					freeMatrix(Bbs);\
+					freeMatrix(Xbs);\
+					Abs = readFromFileEx(fileAbs);\
+					Bbs = readFromFileEx(fileBbs);\
+					Xbs = readFromFileEx(fileXbs)
+
 void runTests(void)
 {
 	FILE* fileA = fopen("testA", "r");
@@ -75,6 +82,67 @@ void runTests(void)
 	fclose(fileA);
 	fclose(fileB);
 	fclose(fileResult);
+}
+
+void runTestsBS(void)
+{
+	FILE* fileAbs = fopen("testAbs", "r");
+	FILE* fileBbs = fopen("testBbs", "r");
+	FILE* fileXbs = fopen("testXbs", "r");
+
+	Matrix* x;
+	Matrix* Abs = readFromFileEx(fileAbs);
+	Matrix* Bbs = readFromFileEx(fileBbs);
+	Matrix* Xbs = readFromFileEx(fileXbs);
+
+	x = createMatrix(Bbs->r, 1);
+
+	//1x1 matrix A, 1x1 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//1x2 matrix A, 1x1 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//2x2 matrix A, 2x1 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//2x2 matrix A, 2x1 matrix B both only with 0s
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//3x3 matrix A, 3x1 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//3x2 matrix A, 3x1 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//1x1 matrix A, 1x2 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	RESETUPBS;
+	//1x2 matrix A, 1x2 matrix B
+	backsubst(&x, Abs, Bbs);
+	assert(areEqual(x, Xbs));
+
+	freeMatrix(Abs); 
+	freeMatrix(Bbs); 
+	freeMatrix(Xbs);
+
+	fclose(fileAbs);
+	fclose(fileBbs);
+	fclose(fileXbs);
 }
 #endif
 
