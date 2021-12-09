@@ -4,7 +4,7 @@
  * Zwraca 1 - błąd dzielenia przez 0 (element na diagonali = 0)
  * Zwraca 2 - błąd nieprawidłowych rozmiarów macierzy
  */
-int  backsubst(Matrix *x, Matrix *mat, Matrix *b) {
+int  backsubst(Matrix* x, Matrix* mat, Matrix* b) {
 				/**
 				 * Tutaj należy umieścić właściwą implemntację.
 				 */
@@ -18,5 +18,3 @@ int  backsubst(Matrix *x, Matrix *mat, Matrix *b) {
 
 				return 0;
 }
-
-

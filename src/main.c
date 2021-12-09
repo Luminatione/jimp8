@@ -6,9 +6,6 @@
 #include "mat_io.h"
 #include "gaussTest.h"
 
-
-#define RUN_TESTS
-
 #ifdef RUN_TESTS
 
 #define RESETUP	freeMatrix(A);\
@@ -110,8 +107,5 @@ int main(int argc, char ** argv) {
 	freeMatrix(A);
 	freeMatrix(b);
 #endif
-
-	
-
 	return 0;
 }
