@@ -118,23 +118,15 @@ void runTestsBS(void)
 
 	RESETUPBS;
 	//2x2 matrix A, 2x1 matrix B, both only with 0s test 3
-	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
+	assert(backsubst(x, Abs, Bbs) == 1);
 
 	RESETUPBS;
 	//3x2 matrix A, 3x1 matrix B test 4
-	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
+	assert(backsubst(x, Abs, Bbs) == 2);
 
 	RESETUPBS;
 	//1x2 matrix A, 1x2 matrix B test 5
-	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
-
-	RESETUPBS;
-	//1x1 matrix A, 1x2 matrix B test 6
-	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
+	assert(backsubst(x, Abs, Bbs) == 2);
 
 	freeMatrix(Abs); 
 	freeMatrix(Bbs); 
