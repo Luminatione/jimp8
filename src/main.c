@@ -68,14 +68,14 @@ void runTests(void)
 	assert(eliminate(A, B) == 1);
 
 	RESETUP;
-	// 3x3 random matrix
+	// 4x4 random matrix
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
 
 	RESETUP;
 	// 2x2 matrix unresolvable without pivot
-	
-	assert(eliminate(A, B) == 1);
+	eliminate(A, B);
+	assert(areEqual(A, resultA));
 
 	freeMatrix(A); 
 	freeMatrix(B); 
