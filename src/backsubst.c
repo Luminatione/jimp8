@@ -5,7 +5,6 @@
  * Zwraca 2 - błąd nieprawidłowych rozmiarów macierzy
  */
 
-=======
 int  backsubst(Matrix *x, Matrix *mat, Matrix *b) {
 	
 	int i, j;

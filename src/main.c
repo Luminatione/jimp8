@@ -73,7 +73,7 @@ void runTests(void)
 	RESETUP;
 	// 2x2 matrix unresolvable without pivot
 	
-	assert(eliminate(A, B) == 0);
+	assert(eliminate(A, B) == 1);
 
 	freeMatrix(A); 
 	freeMatrix(B); 
@@ -98,42 +98,42 @@ void runTestsBS(void)
 	x = createMatrix(Bbs->r, 1);
 
 	//1x1 matrix A, 1x1 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//1x2 matrix A, 1x1 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//2x2 matrix A, 2x1 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//2x2 matrix A, 2x1 matrix B both only with 0s
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//3x3 matrix A, 3x1 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//3x2 matrix A, 3x1 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//1x1 matrix A, 1x2 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	RESETUPBS;
 	//1x2 matrix A, 1x2 matrix B
-	backsubst(&x, Abs, Bbs);
+	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
 	freeMatrix(Abs); 
@@ -149,6 +149,7 @@ void runTestsBS(void)
 int main(int argc, char ** argv) {
 #ifdef RUN_TESTS
 	runTests();
+	runTestsBS();
 #else
 	int res;
 	Matrix* A = readFromFile(argv[1]);
