@@ -15,7 +15,7 @@
 					B = readFromFileEx(fileB);\
 					resultA = readFromFileEx(fileResult)
 
-#define RESETUPBS	freeMatrix(Abs);\
+#define RESETUP_BS	freeMatrix(Abs);\
 					freeMatrix(Bbs);\
 					freeMatrix(Xbs);\
 					freeMatrix(x);\
@@ -103,25 +103,25 @@ void runTestsBS(void)
 	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
-	RESETUPBS;
+	RESETUP_BS;
 	//2x2 matrix A, 2x1 matrix B test 1
 	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
-	RESETUPBS;
+	RESETUP_BS;
 	//3x3 matrix A, 3x1 matrix B test 2
 	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));
 
-	RESETUPBS;
+	RESETUP_BS;
 	//2x2 matrix A, 2x1 matrix B, both only with 0s test 3
 	assert(backsubst(x, Abs, Bbs) == 1);
 
-	RESETUPBS;
+	RESETUP_BS;
 	//3x2 matrix A, 3x1 matrix B test 4
 	assert(backsubst(x, Abs, Bbs) == 2);
 
-	RESETUPBS;
+	RESETUP_BS;
 	//1x2 matrix A, 1x2 matrix B test 5
 	assert(backsubst(x, Abs, Bbs) == 2);
 

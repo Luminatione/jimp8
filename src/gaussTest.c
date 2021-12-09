@@ -6,16 +6,20 @@ static int testCounter = 0;
 
 void assert(int expr)
 {
-	if(!expr)
+	if (!expr)
 	{
 		fprintf(stderr, "Test %d failed\n", testCounter);
 	}
-	testCounter++;
+	else
+	{
+		fprintf(stderr, "Test %d passed\n", testCounter);
+	}
+	++testCounter;
 }
 
 int areEqual(Matrix* a, Matrix* b)
 {
-	if(a->c != b->c || a->r != b->r)
+	if (a->c != b->c || a->r != b->r)
 	{
 		return 0;
 	}
@@ -25,7 +29,7 @@ int areEqual(Matrix* a, Matrix* b)
 		int j;
 		for (j = 0; j < a->c; j++)
 		{
-			if(a->data[i][j] != b->data[i][j])
+			if (a->data[i][j] != b->data[i][j])
 			{
 				return 0;
 			}
