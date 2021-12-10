@@ -30,6 +30,10 @@ void setPivotOnFirstRow(Matrix* a, Matrix *b, int diagonalElementIndex)
  * Zwraca 1 - macierz osobliwa - dzielenie przez 0
  */
 int eliminate(Matrix *mat, Matrix *b){
+	if(mat->r != b->r)
+	{
+		return -1;
+	}
 	int i;
 	for(i = 0; i < mat->c && i < mat->r; ++i)
 	{

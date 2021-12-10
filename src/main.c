@@ -11,10 +11,14 @@
 #define RESETUP	freeMatrix(A);\
 					freeMatrix(B);\
 					freeMatrix(resultA);\
+					freeMatrix(resultB);\
 					A = readFromFileEx(fileA);\
 					B = readFromFileEx(fileB);\
-					resultA = readFromFileEx(fileResult)
-
+					resultA = readFromFileEx(fileResult);\
+					resultB = readFromFileEx(fileResult)
+#define STANDARD_ASSERT_TEST eliminate(A, B);\
+								assert(areEqual(A, resultA));\
+								assert(areEqual(B, resultB))
 #define RESETUP_BS	freeMatrix(Abs);\
 					freeMatrix(Bbs);\
 					freeMatrix(Xbs);\
@@ -34,30 +38,26 @@ void runTests(void)
 	Matrix* A = readFromFileEx(fileA);
 	Matrix* B = readFromFileEx(fileB);
 	Matrix* resultA = readFromFileEx(fileResult);
+	Matrix* resultB = readFromFileEx(fileResult);
 
 	//matrix 1x1
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
 	RESETUP;
 	// 2x1 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
-	
+	STANDARD_ASSERT_TEST;
+
 	RESETUP;
 	// 1x2 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
 	RESETUP;
 	// 2x2 singular matrix, but too small to trigger 0 division
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
 	RESETUP;
 	// 2x2 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
 	RESETUP;
 	// 2x2 matrix only with 0
@@ -69,17 +69,20 @@ void runTests(void)
 
 	RESETUP;
 	// 4x4 random matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
 	RESETUP;
 	// 2x2 matrix unresolvable without pivot
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+	STANDARD_ASSERT_TEST;
 
-	freeMatrix(A); 
-	freeMatrix(B); 
+	RESETUP;
+	// 3x3 random matrix
+	STANDARD_ASSERT_TEST;
+
+	freeMatrix(A);
+	freeMatrix(B);
 	freeMatrix(resultA);
+	freeMatrix(resultB);
 
 	fclose(fileA);
 	fclose(fileB);
@@ -125,8 +128,8 @@ void runTestsBS(void)
 	//1x2 matrix A, 1x2 matrix B test 5
 	assert(backsubst(x, Abs, Bbs) == 2);
 
-	freeMatrix(Abs); 
-	freeMatrix(Bbs); 
+	freeMatrix(Abs);
+	freeMatrix(Bbs);
 	freeMatrix(Xbs);
 
 	fclose(fileAbs);
@@ -135,7 +138,7 @@ void runTestsBS(void)
 }
 #endif
 
-int main(int argc, char ** argv) {
+int main(int argc, char** argv) {
 #ifdef RUN_TESTS
 	runTests();
 	runTestsBS();
