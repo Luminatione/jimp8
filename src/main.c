@@ -6,8 +6,6 @@
 #include "mat_io.h"
 #include "gaussTest.h"
 
-#define RUN_TESTS
-
 #ifdef RUN_TESTS
 
 #define RESETUP	freeMatrix(A);\
@@ -15,8 +13,7 @@
 					freeMatrix(resultA);\
 					A = readFromFileEx(fileA);\
 					B = readFromFileEx(fileB);\
-					resultA = readFromFileEx(fileResult);\
-					resultB = readFromFileEx(fileResult)
+					resultA = readFromFileEx(fileResult)
 
 #define RESETUP_BS	freeMatrix(Abs);\
 					freeMatrix(Bbs);\
@@ -37,56 +34,48 @@ void runTests(void)
 	Matrix* A = readFromFileEx(fileA);
 	Matrix* B = readFromFileEx(fileB);
 	Matrix* resultA = readFromFileEx(fileResult);
-	Matrix* resultB = readFromFileEx(fileResult);
 
-	//matrix 1x1 test 0
+	//matrix 1x1
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 
 	RESETUP;
-	// 2x1 matrix test 1
+	// 2x1 matrix
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 	
 	RESETUP;
-	// 1x2 matrix test 2
+	// 1x2 matrix
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 
 	RESETUP;
-	// 2x2 singular matrix, but too small to trigger 0 division test 3
+	// 2x2 singular matrix, but too small to trigger 0 division
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 
 	RESETUP;
-	// 2x2 matrix test 4
+	// 2x2 matrix
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 
 	RESETUP;
-	// 2x2 matrix only with 0 test 5
+	// 2x2 matrix only with 0
 	assert(eliminate(A, B) == 1);
 
 	RESETUP;
-	// 3x3 matrix only with 0s test 6
+	// 3x3 matrix only with 0s
 	assert(eliminate(A, B) == 1);
 
 	RESETUP;
-	// 3x3 random matrix test 7
+	// 3x3 random matrix
 	eliminate(A, B);
 	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
 
 	RESETUP;
-	// 2x2 matrix unresolvable without pivot test 8
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
-	assert(areEqual(B, resultB));
+	// 2x2 matrix unresolvable without pivot
+	
+	assert(eliminate(A, B) == 1);
 
 	freeMatrix(A); 
 	freeMatrix(B); 
