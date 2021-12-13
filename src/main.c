@@ -6,17 +6,21 @@
 #include "mat_io.h"
 #include "gaussTest.h"
 
+#define RUN_TESTS
+
 #ifdef RUN_TESTS
 
 #define RESETUP	freeMatrix(A);\
-					freeMatrix(B);\
-					freeMatrix(resultA);\
-					A = readFromFileEx(fileA);\
-					B = readFromFileEx(fileB);\
-					resultA = readFromFileEx(fileResult)
+ 					freeMatrix(B);\
+ 					freeMatrix(resultA);\
+					freeMatrix(resultB);\
+ 					A = readFromFileEx(fileA);\
+ 					B = readFromFileEx(fileB);\
+ 					resultA = readFromFileEx(fileResult);\
+ 					resultB = readFromFileEx(fileResult)
 
 #define RESETUP_BS	freeMatrix(Abs);\
-					freeMatrix(Bbs);\
+ 					freeMatrix(Bbs);\
 					freeMatrix(Xbs);\
 					freeMatrix(x);\
 					Abs = readFromFileEx(fileAbs);\
@@ -31,54 +35,62 @@ void runTests(void)
 	FILE* fileResult = fopen("result", "r");
 
 	//test for matrix 1x1
-	Matrix* A = readFromFileEx(fileA);
-	Matrix* B = readFromFileEx(fileB);
-	Matrix* resultA = readFromFileEx(fileResult);
+ 	Matrix* A = readFromFileEx(fileA);
+ 	Matrix* B = readFromFileEx(fileB);
+ 	Matrix* resultA = readFromFileEx(fileResult);
+ 	Matrix* resultB = readFromFileEx(fileResult);
 
-	//matrix 1x1
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+ 	//matrix 1x1
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 0
+ 	assert(areEqual(B, resultB));	//test 1
 
-	RESETUP;
-	// 2x1 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
-	
-	RESETUP;
-	// 1x2 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+ 	RESETUP;
+ 	// 2x1 matrix 
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 2
+ 	assert(areEqual(B, resultB));	//test 3
 
-	RESETUP;
-	// 2x2 singular matrix, but too small to trigger 0 division
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+ 	RESETUP;
+ 	// 1x2 matrix 
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 4
+ 	assert(areEqual(B, resultB));	//test 5
 
-	RESETUP;
-	// 2x2 matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+ 	RESETUP;
+ 	// 2x2 singular matrix, but too small to trigger 0 division
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 6
+ 	assert(areEqual(B, resultB));	//test 7
 
-	RESETUP;
-	// 2x2 matrix only with 0
-	assert(eliminate(A, B) == 1);
+ 	RESETUP;
+ 	// 2x2 matrix 
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 8
+ 	assert(areEqual(B, resultB));	//test 9
 
-	RESETUP;
-	// 3x3 matrix only with 0s
-	assert(eliminate(A, B) == 1);
+ 	RESETUP;
+ 	// 2x2 matrix only with 0 
+ 	assert(eliminate(A, B) == 1);	//test 10
 
-	RESETUP;
-	// 3x3 random matrix
-	eliminate(A, B);
-	assert(areEqual(A, resultA));
+ 	RESETUP;
+ 	// 3x3 matrix only with 0s 
+ 	assert(eliminate(A, B) == 1);	//test 11
 
-	RESETUP;
-	// 2x2 matrix unresolvable without pivot
-	
-	assert(eliminate(A, B) == 1);
+ 	RESETUP;
+ 	// 3x3 random matrix 
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 12
+ 	assert(areEqual(B, resultB));	//test 13
 
-	freeMatrix(A); 
-	freeMatrix(B); 
+ 	RESETUP;
+ 	// 2x2 matrix unresolvable without pivot 
+ 	eliminate(A, B);
+ 	assert(areEqual(A, resultA));	//test 14
+ 	assert(areEqual(B, resultB));	//test 15
+
+ 	freeMatrix(A); 
+ 	freeMatrix(B); 
 	freeMatrix(resultA);
 
 	fclose(fileA);
@@ -99,31 +111,31 @@ void runTestsBS(void)
 
 	x = createMatrix(Bbs->r, 1);
 
-	//1x1 matrix A, 1x1 matrix B test 0
+	//1x1 matrix A, 1x1 matrix B 
 	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
+	assert(areEqual(x, Xbs));	//test 16
 
 	RESETUP_BS;
-	//2x2 matrix A, 2x1 matrix B test 1
+	//2x2 matrix A, 2x1 matrix B 
 	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
-
+	assert(areEqual(x, Xbs));	//test 17
+	
 	RESETUP_BS;
-	//3x3 matrix A, 3x1 matrix B test 2
+	//3x3 matrix A, 3x1 matrix B 
 	backsubst(x, Abs, Bbs);
-	assert(areEqual(x, Xbs));
+	assert(areEqual(x, Xbs));	//test 18
 
 	RESETUP_BS;
-	//2x2 matrix A, 2x1 matrix B, both only with 0s test 3
-	assert(backsubst(x, Abs, Bbs) == 1);
+	//2x2 matrix A, 2x1 matrix B, both only with 0s 
+	assert(backsubst(x, Abs, Bbs) == 1);	//test 19
 
 	RESETUP_BS;
-	//3x2 matrix A, 3x1 matrix B test 4
-	assert(backsubst(x, Abs, Bbs) == 2);
+	//3x2 matrix A, 3x1 matrix B 
+	assert(backsubst(x, Abs, Bbs) == 2);	//test 20
 
 	RESETUP_BS;
-	//1x2 matrix A, 1x2 matrix B test 5
-	assert(backsubst(x, Abs, Bbs) == 2);
+	//1x2 matrix A, 1x2 matrix B 
+	assert(backsubst(x, Abs, Bbs) == 2);	//test 21
 
 	freeMatrix(Abs); 
 	freeMatrix(Bbs); 
@@ -135,10 +147,12 @@ void runTestsBS(void)
 }
 #endif
 
-int main(int argc, char ** argv) {
+int main(int argc, char ** argv)
+{
 #ifdef RUN_TESTS
 	runTests();
 	runTestsBS();
+
 #else
 	int res;
 	Matrix* A = readFromFile(argv[1]);
@@ -165,5 +179,7 @@ int main(int argc, char ** argv) {
 	freeMatrix(A);
 	freeMatrix(b);
 #endif
+
 	return 0;
+
 }
