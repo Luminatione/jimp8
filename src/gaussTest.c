@@ -8,7 +8,7 @@ void assert(int expr)
 {
 	if (!expr)
 	{
-		fprintf(stderr, "Test %d failed\n", testCounter);
+		fprintf(stderr, "!!Test %d failed!!\n", testCounter);
 	}
 	else
 	{
