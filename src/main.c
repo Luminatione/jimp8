@@ -6,8 +6,6 @@
 #include "mat_io.h"
 #include "gaussTest.h"
 
-#define RUN_TESTS
-
 #ifdef RUN_TESTS
 
 #define RESETUP	freeMatrix(A);\
@@ -17,7 +15,9 @@
 					A = readFromFileEx(fileA);\
 					B = readFromFileEx(fileB);\
 					resultA = readFromFileEx(fileResult);\
-					resultB = readFromFileEx(fileResult)
+					resultB = readFromFileEx(fileResult);\
+					if(A == NULL || B == NULL || resultA == NULL || resultB == NULL)\
+						return
 #define STANDARD_ASSERT_TEST eliminate(A, B);\
 								assert(areEqual(A, resultA));\
 								assert(areEqual(B, resultB))
@@ -28,19 +28,25 @@
 					Abs = readFromFileEx(fileAbs);\
 					Bbs = readFromFileEx(fileBbs);\
 					Xbs = readFromFileEx(fileXbs);\
-					x = createMatrix(Bbs->r, 1)
+					x = createMatrix(Bbs->r, 1);\
+					if (Abs == NULL || Bbs == NULL || Xbs == NULL)\
+						return;
 
-void runTests(void)
+void runEliminationTests(void)
 {
-	FILE* fileA = fopen("testA", "r");
-	FILE* fileB = fopen("testB", "r");
-	FILE* fileResult = fopen("result", "r");
+	printf("Elimination tests: \n");
+	FILE* fileA = fopen("../dane/testA", "r");
+	FILE* fileB = fopen("../dane/testB", "r");
+	FILE* fileResult = fopen("../dane/result", "r");
 
 	//test for matrix 1x1
 	Matrix* A = readFromFileEx(fileA);
 	Matrix* B = readFromFileEx(fileB);
 	Matrix* resultA = readFromFileEx(fileResult);
 	Matrix* resultB = readFromFileEx(fileResult);
+
+	//every test in function is separated into two cases to make identifying bugs easier; first is test of matrix A and second is test of matrix B
+	//so if test 0 fails and test 1 passes, matrix B was properly computed, but there was error in matrix A for the same set of unknowns
 
 	//matrix 1x1
 	STANDARD_ASSERT_TEST;
@@ -90,12 +96,12 @@ void runTests(void)
 	fclose(fileB);
 	fclose(fileResult);
 }
-
-void runTestsBS(void)
+void runBacksubstTests(void)
 {
-	FILE* fileAbs = fopen("testAbs", "r");
-	FILE* fileBbs = fopen("testBbs", "r");
-	FILE* fileXbs = fopen("testXbs", "r");
+	printf("Backsubst tests: \n");
+	FILE* fileAbs = fopen("../dane/testAbs", "r");
+	FILE* fileBbs = fopen("../dane/testBbs", "r");
+	FILE* fileXbs = fopen("../dane/testXbs", "r");
 
 	Matrix* x;
 	Matrix* Abs = readFromFileEx(fileAbs);
@@ -112,7 +118,7 @@ void runTestsBS(void)
 	//2x2 matrix A, 2x1 matrix B 
 	backsubst(x, Abs, Bbs);
 	assert(areEqual(x, Xbs));	//test 17
-	
+
 	RESETUP_BS;
 	//3x3 matrix A, 3x1 matrix B 
 	backsubst(x, Abs, Bbs);
@@ -142,11 +148,10 @@ void runTestsBS(void)
 
 int main(int argc, char** argv) {
 #ifdef RUN_TESTS
-	runTests();
-	runTestsBS();
+	runEliminationTests();
+	runBacksubstTests();
 
 #else
-	int res;
 	Matrix* A = readFromFile(argv[1]);
 	Matrix* b = readFromFile(argv[2]);
 	Matrix* x;
@@ -156,22 +161,22 @@ int main(int argc, char** argv) {
 	printToScreen(A);
 	printToScreen(b);
 
-	res = eliminate(A, b);
-	x = createMatrix(b->r, 1);
-	if (x != NULL) {
-		res = backsubst(x, A, b);
+	if (eliminate(A, b) == 0)
+	{
+		x = createMatrix(b->r, 1);
+		if (x != NULL) {
+			backsubst(x, A, b);
 
-		printToScreen(x);
-		freeMatrix(x);
+			printToScreen(x);
+			freeMatrix(x);
+		}
+		else {
+			fprintf(stderr, "Błąd! Nie mogłem utworzyć wektora wynikowego x.\n");
+		}
 	}
-	else {
-		fprintf(stderr, "Błąd! Nie mogłem utworzyć wektora wynikowego x.\n");
-	}
-
 	freeMatrix(A);
 	freeMatrix(b);
 #endif
-
 	return 0;
 
 }

@@ -53,12 +53,12 @@ Matrix* readFromFileEx(FILE* file)
 					fscanf(file, "%lf", &(mat->data[ir][ic]));
 		}
 		else {
-			fprintf(stderr, "Wyst¹pi³ problem podczas tworzenia macierzy o rozmiarach %d x %d dla danych z pliku: %s\n", r, c, file);
+			fprintf(stderr, "Wyst¹pi³ problem podczas tworzenia macierzy o rozmiarach %d x %d dla danych z pliku\n", r, c);
 		}
 
 	}
 	else {
-		fprintf(stderr, "Nie mogê otworzyæ pliku o nazwie: %s\n", file);
+		fprintf(stderr, "Nie mogê otworzyæ pliku\n");
 	}
 
 	return mat;
